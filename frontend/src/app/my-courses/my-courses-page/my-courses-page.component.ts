@@ -24,6 +24,7 @@ export class MyCoursesPageComponent {
 
   /** Whether or not to show the previous courses */
   showPreviousCourses: WritableSignal<boolean> = signal(false);
+  isChatbotOpen: WritableSignal<boolean> = signal(false);
 
   constructor(
     protected myCoursesService: MyCoursesService,
@@ -106,8 +107,8 @@ export class MyCoursesPageComponent {
 
   /* Opens the CourseSeek AI Chatbot chat window */
   openChatWindow() {
-    console.log('Chat window opened!');
-
+    console.log('Chat window open? : ' + this.isChatbotOpen());
+    this.isChatbotOpen.update((currentValue) => !currentValue);
     //window code goes here.
   }
 }
