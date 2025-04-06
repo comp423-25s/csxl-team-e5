@@ -1,0 +1,37 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: space-between;
+}
+
+.main-container .chat-header {
+    display: flex;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    gap: 20px;
+    align-self: stretch;
+    flex-grow: 1;
+    border-top-left-radius: 20px;
+    justify-content: flex-start;
+    position: sticky !important;
+    overflow: hidden;
+    align-items: center;
+    border-bottom: 0.02rem solid gray;
+    border-top-right-radius: 20px;
+    background-color: #4D6BFE;
+    padding: 12px 18px;
+}
+
+.main-container .chat-header .text-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container .assistant-bubble {
+    max-height: 25px;
+    min-height: 15px;
+    max-width: 75%;
+}

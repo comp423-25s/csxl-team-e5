@@ -60,7 +60,9 @@
     right: 24px;
     min-width: 180px;
     min-height: 50px;
+    flex-direction: column;
     height: 75%;
+    padding: 0 !important;
     width: 20%;
     z-index: 2;
     border-radius: 20px;

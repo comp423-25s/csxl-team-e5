@@ -65,6 +65,7 @@ import { CourseSeekComponent } from './course-seek/course-seek.component';
     OfficeHoursPageComponent,
     OfficeHoursQueueComponent,
     OfficeHoursGetHelpComponent,
+    CourseSeekComponent,
     OfficeHoursEditorComponent,
     SettingsComponent,
     CourseCardWidget,
@@ -101,7 +102,6 @@ import { CourseSeekComponent } from './course-seek/course-seek.component';
     MatNativeDateModule,
     MatRadioModule,
     MatCheckbox,
-    CourseSeekComponent
   ],
   providers: [MatDatepickerModule]
 })
