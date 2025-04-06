@@ -53,6 +53,7 @@ import { DeleteRecurringEventDialog } from './dialogs/delete-recurring-event/del
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { CourseSeekComponent } from './course-seek/course-seek.component';
+import { ChatBubbleWidget } from './widgets/chat-bubble/chat-bubble.widget';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { CourseSeekComponent } from './course-seek/course-seek.component';
     RosterComponent,
     OfficeHoursPageComponent,
     OfficeHoursQueueComponent,
+    ChatBubbleWidget,
     OfficeHoursGetHelpComponent,
     CourseSeekComponent,
     OfficeHoursEditorComponent,

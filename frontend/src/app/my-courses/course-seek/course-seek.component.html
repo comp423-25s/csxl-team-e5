@@ -1,18 +1,24 @@
 <div class="main-container">
     <div class="chat-header">
-        <mat-icon>chatbubblerounded</mat-icon>
-        <div class="text-container">
-            <!-- <img src="../../../assets/CourseSeek.png" alt="Course Seek Profile" style="width: 25%; border-radius: 64px"/> -->
-            <span style="font-weight: bold;">CourseSeek</span>
-            <span style="font-weight: lighter; font-size: small;">AI Agent</span>
-        </div>
+      <mat-icon>chat_bubble_outline</mat-icon>
+      <div class="text-container">
+        <span style="font-weight: bold;">CourseSeek</span>
+        <span style="font-weight: lighter; font-size: small;">AI Agent</span>
+      </div>
     </div>
-    <div class="chat-history-container">
-        <div class="assistant-bubble">
-            <mat-card>
-                <span style="padding: 10px 10px 10px 10px">Hi</span>
-            </mat-card>
-        </div>
+    <div class="chat-content">
+      <chat-bubble></chat-bubble>
     </div>
-</div>
-
+    <div class="footer-container">
+        <div class="input-container">
+          <input class="text-input" placeholder="Type your message..."/>
+          <div class="toolbar">
+            <div class="tools">
+              <button class="input-button">
+                <mat-icon style="font-size: 20px; color: white; padding-top: 4px; padding-left: 1px">send</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>

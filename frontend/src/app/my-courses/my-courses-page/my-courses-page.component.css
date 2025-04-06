@@ -60,14 +60,23 @@
     right: 24px;
     min-width: 180px;
     min-height: 50px;
-    flex-direction: column;
-    height: 75%;
+    height: 75vh;
     padding: 0 !important;
     width: 20%;
     z-index: 2;
     border-radius: 20px;
-    background: linear-gradient(180deg, #B0A0D9 150px, #59506E 400px);
-}
+    background: #f8f8f8;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 
 .fab-button {
     position: fixed;

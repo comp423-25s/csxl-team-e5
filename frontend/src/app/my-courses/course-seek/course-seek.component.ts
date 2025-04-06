@@ -3,7 +3,7 @@ import { ChatResourceResponse, CourseSeekService } from './course-seek.service';
 import { map } from 'rxjs';
 
 interface ChatHistory extends ChatResourceResponse {
-  role: "Assistant" | "User"
+  role: "assistant" | "user"
 }
 
 @Component({
@@ -22,7 +22,7 @@ export class CourseSeekComponent {
     const toChatHistory = (response: ChatResourceResponse) => {
       return {
         ...response,
-        role: "Assistant"
+        role: "assistant"
       } as ChatHistory
     }
     courseSeekResponse.pipe(map((response) => this.chat_history.set([...this.chat_history(), toChatHistory(response)]))).subscribe()
