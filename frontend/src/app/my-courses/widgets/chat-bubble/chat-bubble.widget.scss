@@ -1,28 +1,25 @@
 :host {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    display: block;
     width: 100%;
     overflow: hidden;
   }
   
   .messages-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    display: block;
+    position: relative;
     width: 100%;
     padding: 14px;
-    overflow-y: scroll;
-    overflow-x: hidden;
   }
   
   .assistant-container {
     display: flex;
+    padding-bottom: 0;
     flex-direction: column;
     align-items: flex-start;
     margin-left: -20px;
-    padding: 0;
-    gap: 0;
+    position: relative;
+    min-height: 30px;
+    margin-bottom: 0;
     width: 100%;
   }
   
@@ -39,6 +36,7 @@
   .assistant-container .assistant-card {
     align-self: flex-start;
     padding: 8px 12px;
+    display: block;
     font-weight: 400;
     text-align: left;
     max-width: 80%;
@@ -55,15 +53,18 @@
   
   .user-card {
     align-self: flex-end;
+    display: block;
+    position: relative;
     font-size: 14px;
     box-shadow: none !important;
     padding: 8px 12px;
     font-weight: 400;
     text-align: left;
-    max-width: 80%;
     white-space: normal;
     word-wrap: break-word;
     background-color: #B371CB;
     color: white;
     border-radius: 12px 12px 0 12px;
+    float: right;
+    clear: both;
   }
