@@ -1,5 +1,6 @@
 :host {
     display: block;
+
     width: 100%;
     overflow: hidden;
   }
@@ -9,6 +10,7 @@
     position: relative;
     width: 100%;
     padding: 14px;
+
   }
   
   .assistant-container {
@@ -20,6 +22,7 @@
     position: relative;
     min-height: 30px;
     margin-bottom: 0;
+
     width: 100%;
   }
   
@@ -29,6 +32,7 @@
     color: #9F9F9F;
     font-size: x-small;
     margin: 0 0 -5px 20px;
+
     padding-right: 10px;
     width: auto;
   }
@@ -37,6 +41,7 @@
     align-self: flex-start;
     padding: 8px 12px;
     display: block;
+
     font-weight: 400;
     text-align: left;
     max-width: 80%;
@@ -56,11 +61,13 @@
     display: block;
     position: relative;
     margin-right: 20px;
+
     font-size: 14px;
     box-shadow: none !important;
     padding: 8px 12px;
     font-weight: 400;
     text-align: left;
+
     white-space: normal;
     word-wrap: break-word;
     background-color: #B371CB;
@@ -68,4 +75,5 @@
     border-radius: 12px 12px 0 12px;
     float: right;
     clear: both;
+
   }

@@ -8,6 +8,7 @@
       <button class="close-button" (click)="toggleChatWindow()">
         <mat-icon>close</mat-icon>
       </button>
+
     </div>
     <div class="chat-content">
       <chat-bubble [role] = "default_msg().role" [input] = "default_msg().response"></chat-bubble>

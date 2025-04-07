@@ -25,6 +25,7 @@ export class MyCoursesPageComponent {
 
   /** Whether or not to show the previous courses */
   showPreviousCourses: WritableSignal<boolean> = signal(false);
+  isChatbotOpen: WritableSignal<boolean> = signal(false);
 
   constructor(
     protected myCoursesService: MyCoursesService,
@@ -110,6 +111,7 @@ export class MyCoursesPageComponent {
   toggleChatWindow() {
     console.log('Chat window open? : ' + this.chatService.isChatWindowOpen());
     this.chatService.toggleChatWindow()
+
     //window code goes here.
   }
 }

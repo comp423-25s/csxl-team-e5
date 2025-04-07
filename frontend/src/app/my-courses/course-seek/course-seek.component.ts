@@ -3,6 +3,7 @@ import { ChatResourceResponse, CourseSeekService } from './course-seek.service';
 import { map } from 'rxjs';
 import { ChatService } from 'src/app/shared/chat-service/chat-service';
 
+
 interface ChatHistory extends ChatResourceResponse {
   role: 'assistant' | 'user';
 }
@@ -22,6 +23,7 @@ export class CourseSeekComponent {
   });
 
   constructor(private resourceService: CourseSeekService, protected chatService: ChatService) {}
+
 
   async getChatCompletions(user_input: string) {
     const courseSeekResponse = await this.resourceService.chat(user_input);
@@ -65,6 +67,7 @@ export class CourseSeekComponent {
   toggleChatWindow() {
     this.chatService.toggleChatWindow()
   }
+
 }
 
 // bottom of chat window: input field for text, "send message" button
