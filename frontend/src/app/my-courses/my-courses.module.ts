@@ -52,6 +52,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { DeleteRecurringEventDialog } from './dialogs/delete-recurring-event/delete-recurring-event.dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { CourseSeekComponent } from './course-seek/course-seek.component';
+import { ChatBubbleWidget } from './widgets/chat-bubble/chat-bubble.widget';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { MatCheckbox } from '@angular/material/checkbox';
     RosterComponent,
     OfficeHoursPageComponent,
     OfficeHoursQueueComponent,
+    ChatBubbleWidget,
     OfficeHoursGetHelpComponent,
+    CourseSeekComponent,
     OfficeHoursEditorComponent,
     SettingsComponent,
     CourseCardWidget,
@@ -99,7 +103,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
     MatDatepickerModule,
     MatNativeDateModule,
     MatRadioModule,
-    MatCheckbox
+    MatCheckbox,
   ],
   providers: [MatDatepickerModule]
 })
