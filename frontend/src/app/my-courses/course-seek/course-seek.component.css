@@ -31,6 +31,17 @@
     display: flex;
     flex-direction: column;
   }
+
+  .main-container .chat-header .close-button {
+    display: flex;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+  }
   
   .main-container .chat-content {
     flex: 1;

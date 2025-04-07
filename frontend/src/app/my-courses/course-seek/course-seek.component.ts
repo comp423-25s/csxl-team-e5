@@ -1,6 +1,7 @@
 import { Component, Input, signal, WritableSignal } from '@angular/core';
 import { ChatResourceResponse, CourseSeekService } from './course-seek.service';
 import { map } from 'rxjs';
+import { ChatService } from 'src/app/shared/chat-service/chat-service';
 
 interface ChatHistory extends ChatResourceResponse {
   role: 'assistant' | 'user';
@@ -20,7 +21,7 @@ export class CourseSeekComponent {
     sections: null
   });
 
-  constructor(private resourceService: CourseSeekService) {}
+  constructor(private resourceService: CourseSeekService, protected chatService: ChatService) {}
 
   async getChatCompletions(user_input: string) {
     const courseSeekResponse = await this.resourceService.chat(user_input);
@@ -59,6 +60,10 @@ export class CourseSeekComponent {
       .subscribe();
 
     this.text_input.set('');
+  }
+
+  toggleChatWindow() {
+    this.chatService.toggleChatWindow()
   }
 }
 

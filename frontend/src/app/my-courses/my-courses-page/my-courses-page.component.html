@@ -53,14 +53,14 @@
       }
     </mat-card-content>
   </mat-pane>
-    @if(isChatbotOpen()){
+    @if(chatService.isChatWindowOpen()){
     <mat-card-content class="chat-container">
       <app-course-seek>
         
       </app-course-seek>
     </mat-card-content>
   }
-  <button mat-fab color="accent" class="fab-button" (click)="openChatWindow()">
+  <button mat-fab color="accent" class="fab-button" (click)="toggleChatWindow()">
     <mat-icon>chat</mat-icon>
   </button>
 </div>

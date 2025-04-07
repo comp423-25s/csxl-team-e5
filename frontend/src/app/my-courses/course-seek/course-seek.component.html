@@ -5,6 +5,9 @@
         <span style="font-weight: bold;">CourseSeek</span>
         <span style="font-weight: lighter; font-size: small;">AI Agent</span>
       </div>
+      <button class="close-button" (click)="toggleChatWindow()">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
     <div class="chat-content">
       <chat-bubble [role] = "default_msg().role" [input] = "default_msg().response"></chat-bubble>
