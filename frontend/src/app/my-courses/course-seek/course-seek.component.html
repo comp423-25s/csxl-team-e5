@@ -7,14 +7,17 @@
       </div>
     </div>
     <div class="chat-content">
-      <chat-bubble></chat-bubble>
+      <chat-bubble [role] = "default_msg().role" [input] = "default_msg().response"></chat-bubble>
+      @for(chat of chat_history(); track chat){
+        <chat-bubble [role] = "chat.role" [input] = "chat.response"></chat-bubble>
+      }
     </div>
     <div class="footer-container">
         <div class="input-container">
-          <input class="text-input" placeholder="Type your message..."/>
+          <input class="text-input" placeholder="Type your message..." [value]="text_input()" (input)="text_input.set($any($event.target).value)" />
           <div class="toolbar">
             <div class="tools">
-              <button class="input-button">
+              <button class="input-button" (click)="getChatCompletions(text_input())">
                 <mat-icon style="font-size: 20px; color: white; padding-top: 4px; padding-left: 1px">send</mat-icon>
               </button>
             </div>

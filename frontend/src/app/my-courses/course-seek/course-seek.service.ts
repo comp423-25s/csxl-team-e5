@@ -11,13 +11,11 @@ export interface ChatResourceResponse {
   providedIn: 'root'
 })
 export class CourseSeekService {
-
   constructor(protected http: HttpClient) {}
 
-  async chat(user_input: string) {
-    return await this.http.post<ChatResourceResponse>(
-      `/api/academics/chat`,
-      user_input
-    );
+  async chat(input: string) {
+    return this.http.post<ChatResourceResponse>(`/api/academics/chat`, {
+      input
+    });
   }
 }

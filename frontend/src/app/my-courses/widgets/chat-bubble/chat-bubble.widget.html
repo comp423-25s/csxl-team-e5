@@ -1,23 +1,12 @@
 <div class="chat-content">
     <mat-list class="messages-container">
-      <div class="assistant-container">
-        <span class="assistant-header">CourseSeek</span>
-        <mat-card class="assistant-card">Hello! How can I help you with finding courses?</mat-card>
-      </div>
-      <mat-card class="user-card">Hi there!</mat-card>
-      <div class="assistant-container">
-        <span class="assistant-header">CourseSeek</span>
-        <mat-card class="assistant-card">I can help you find courses. What are you looking for?</mat-card>
-      </div>
-      <mat-card class="user-card">I'm interested in Computer Science classes</mat-card>
-      <div class="assistant-container">
-        <span class="assistant-header">CourseSeek</span>
-        <mat-card class="assistant-card">Great! Are you looking for introductory or advanced Computer Science courses?</mat-card>
-      </div>
-      <mat-card class="user-card">I'm interested in Computer Science classes</mat-card>
-      <div class="assistant-container">
-        <span class="assistant-header">CourseSeek</span>
-        <mat-card class="assistant-card">Great! Are you looking for introductory or advanced Computer Science courses?</mat-card>
-      </div>
+      @if(role == "assistant"){
+        <div class="assistant-container">
+          <span class="assistant-header">CourseSeek</span>
+          <mat-card class="assistant-card">{{ input }}</mat-card>
+        </div>
+      }@else {
+        <mat-card class="user-card">{{ input }}</mat-card>
+      }
     </mat-list>
   </div>

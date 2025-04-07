@@ -3,7 +3,7 @@ import { ChatResourceResponse, CourseSeekService } from './course-seek.service';
 import { map } from 'rxjs';
 
 interface ChatHistory extends ChatResourceResponse {
-  role: "assistant" | "user"
+  role: 'assistant' | 'user';
 }
 
 @Component({
@@ -13,19 +13,52 @@ interface ChatHistory extends ChatResourceResponse {
 })
 export class CourseSeekComponent {
   text_input: WritableSignal<string> = signal('');
-  chat_history: WritableSignal<ChatHistory[]> = signal([])
+  chat_history: WritableSignal<ChatHistory[]> = signal([]);
+  default_msg: WritableSignal<ChatHistory> = signal({
+    role: 'assistant',
+    response: 'Hi, I am CourseSeek. How can I help you today?',
+    sections: null
+  });
 
   constructor(private resourceService: CourseSeekService) {}
 
   async getChatCompletions(user_input: string) {
-    const courseSeekResponse = await this.resourceService.chat(user_input)
-    const toChatHistory = (response: ChatResourceResponse) => {
-      return {
-        ...response,
-        role: "assistant"
-      } as ChatHistory
-    }
-    courseSeekResponse.pipe(map((response) => this.chat_history.set([...this.chat_history(), toChatHistory(response)]))).subscribe()
+    const courseSeekResponse = await this.resourceService.chat(user_input);
+    const toChatHistory = (response: ChatResourceResponse, role: string) => {
+      if (role == 'assistant') {
+        return {
+          ...response,
+          role: 'assistant'
+        } as ChatHistory;
+      } else {
+        return {
+          ...response,
+          role: 'user'
+        } as ChatHistory;
+      }
+    };
+    this.chat_history.set([
+      ...this.chat_history(),
+      toChatHistory(
+        {
+          sections: null,
+          response: user_input
+        },
+        'user'
+      )
+    ]);
+    courseSeekResponse
+      .pipe(
+        map((response) =>
+          this.chat_history.set([
+            ...this.chat_history(),
+            toChatHistory(response, 'assistant')
+          ])
+        )
+      )
+      .subscribe();
+
+    this.text_input.set('');
   }
 }
 
