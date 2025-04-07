@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateCourseSiteDialog } from '../dialogs/create-course-site/create-course-site.dialog';
 import { TermOverview, CourseSiteOverview } from '../my-courses.model';
+import { ChatService } from 'src/app/shared/chat-service/chat-service';
 
 interface CourseInformation extends CourseSiteOverview {
   termId: string;
@@ -29,7 +30,8 @@ export class MyCoursesPageComponent {
   constructor(
     protected myCoursesService: MyCoursesService,
     private router: Router,
-    protected dialog: MatDialog
+    protected dialog: MatDialog,
+    protected chatService: ChatService
   ) {}
 
   /** Opens the dialog for creating a course site */
@@ -106,9 +108,10 @@ export class MyCoursesPageComponent {
   }
 
   /* Opens the CourseSeek AI Chatbot chat window */
-  openChatWindow() {
-    console.log('Chat window open? : ' + this.isChatbotOpen());
-    this.isChatbotOpen.update((currentValue) => !currentValue);
+  toggleChatWindow() {
+    console.log('Chat window open? : ' + this.chatService.isChatWindowOpen());
+    this.chatService.toggleChatWindow()
+
     //window code goes here.
   }
 }

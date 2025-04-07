@@ -1,8 +1,10 @@
 .main-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 75vh;
     width: 100%;
+    overflow: hidden;
+
   }
   
   .main-container .chat-header {
@@ -30,12 +32,32 @@
     display: flex;
     flex-direction: column;
   }
+
+
+  .main-container .chat-header .close-button {
+    display: flex;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+  }
   
   .main-container .chat-content {
     flex: 1;
-    overflow: scroll !important;
-    display: flex;
-    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0 !important;
+    display: block;
+    &::-webkit-scrollbar {
+      width: 0;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
   }
 
   .main-container .footer-container {
@@ -48,15 +70,15 @@
     background-color: #f8f8f8;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     margin-top: auto;
-    overflow: hidden !important;
     z-index: 3;
   }
   
   .main-container .footer-container .input-container {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     width: 100%;
+    min-width: 0;
     background-color: #fff;
     border-radius: 24px;
     padding: 8px 12px;
@@ -67,6 +89,9 @@
     flex: 1;
     background-color: transparent;
     border: none;
+    min-width: 0;
+    text-overflow: ellipsis;
+
     outline: none;
     font-size: 14px;
     color: #000;
@@ -76,12 +101,19 @@
   .main-container .footer-container .input-container .toolbar {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     justify-content: center;
+    position: relative;
+
   }
   
   .main-container .footer-container .input-container .toolbar .tools {
     display: flex;
     align-items: center;
+    position: relative;
+    margin-right: auto;
+    flex-shrink: 0;
+
   }
   
   .main-container .footer-container .input-container .toolbar .tools .input-button {
