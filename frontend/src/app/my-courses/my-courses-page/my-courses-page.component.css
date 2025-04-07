@@ -8,7 +8,6 @@
     ::ng-deep .mat-pane {
         max-width: 100% !important;
         min-height: calc(100vh - 112px);
-        margin-bottom: 32px !important;
     }
 }
 
@@ -54,3 +53,35 @@
         align-items: start !important;
     }
 }
+
+.chat-container {
+    position: fixed;
+    bottom: 120px;
+    right: 24px;
+    min-width: 180px;
+    min-height: 50px;
+    height: 75vh;
+    padding: 0 !important;
+    width: 20%;
+    z-index: 2;
+    border-radius: 20px;
+    background: #f8f8f8;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+.fab-button {
+    position: fixed;
+    bottom: 50px; 
+    right: 50px;  
+    z-index: 2; 
+}
+  

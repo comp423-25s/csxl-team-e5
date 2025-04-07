@@ -1,0 +1,12 @@
+<div class="chat-content">
+    <mat-list class="messages-container">
+      @if(role == "assistant"){
+        <div class="assistant-container">
+          <span class="assistant-header">CourseSeek</span>
+          <mat-card class="assistant-card">{{ input }}</mat-card>
+        </div>
+      }@else {
+        <mat-card class="user-card">{{ input }}</mat-card>
+      }
+    </mat-list>
+  </div>
