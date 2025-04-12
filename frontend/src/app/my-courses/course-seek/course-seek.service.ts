@@ -4,7 +4,7 @@ import { CatalogSection } from 'src/app/academics/academics.models';
 
 export interface ChatResourceResponse {
   sections: CatalogSection[] | null;
-  response: string;
+  message: string;
 }
 
 @Injectable({
@@ -14,8 +14,9 @@ export class CourseSeekService {
   constructor(protected http: HttpClient) {}
 
   async chat(input: string) {
-    return this.http.post<ChatResourceResponse>(`/api/academics/chat`, {
-      input
-    });
+    return this.http.post<ChatResourceResponse>(
+      `/api/academics/semantic-chat`,
+      { input }
+    );
   }
 }
