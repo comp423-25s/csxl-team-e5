@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { CatalogSection } from 'src/app/academics/academics.models';
+import { CourseSeekCourseCard } from './course-seek.component';
 
 export interface ChatResourceResponse {
   sections: CatalogSection[] | null;

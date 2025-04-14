@@ -2,10 +2,16 @@ import { Component, Input, signal, WritableSignal } from '@angular/core';
 import { ChatResourceResponse, CourseSeekService } from './course-seek.service';
 import { map } from 'rxjs';
 import { ChatService } from 'src/app/shared/chat-service/chat-service';
-
+import { CourseSiteOverview } from '../my-courses.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ShowCourseseekCardsComponent } from '../dialogs/show-courseseek-cards/show-courseseek-cards.component';
 
 interface ChatHistory extends ChatResourceResponse {
   role: 'assistant' | 'user';
+}
+export interface CourseSeekCourseCard {
+  course: CourseSiteOverview;
+  termId: string;
 }
 
 @Component({
@@ -22,8 +28,11 @@ export class CourseSeekComponent {
     sections: null
   });
 
-  constructor(private resourceService: CourseSeekService, protected chatService: ChatService) {}
-
+  constructor(
+    private resourceService: CourseSeekService,
+    protected chatService: ChatService,
+    private dialog: MatDialog
+  ) {}
 
   async getChatCompletions(user_input: string) {
     const courseSeekResponse = await this.resourceService.chat(user_input);
@@ -65,9 +74,14 @@ export class CourseSeekComponent {
   }
 
   toggleChatWindow() {
-    this.chatService.toggleChatWindow()
+    this.chatService.toggleChatWindow();
   }
 
+  openDialog(courseCardArray: CourseSeekCourseCard[]) {
+    this.dialog.open(ShowCourseseekCardsComponent, {
+      data: courseCardArray
+    });
+  }
 }
 
 // bottom of chat window: input field for text, "send message" button

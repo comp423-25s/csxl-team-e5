@@ -1,1 +1,13 @@
-<p>show-courseseek-cards works!</p>
+<h2 mat-dialog-title>Suggested Courses</h2>
+    <mat-dialog-content>
+      <div class="course-grid">
+        @for(courseInfo of data; track courseInfo) {
+            <ai-course-card [course]="courseInfo.course" [termId]="courseInfo.termId"></ai-course-card>
+        }
+
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>

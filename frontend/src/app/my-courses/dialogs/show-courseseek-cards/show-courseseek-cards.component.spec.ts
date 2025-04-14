@@ -9,8 +9,7 @@ describe('ShowCourseseekCardsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ShowCourseseekCardsComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ShowCourseseekCardsComponent);
     component = fixture.componentInstance;

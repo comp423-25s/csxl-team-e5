@@ -54,7 +54,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { CourseSeekComponent } from './course-seek/course-seek.component';
 import { ChatBubbleWidget } from './widgets/chat-bubble/chat-bubble.widget';
-import { AICourseCard } from './widgets/ai-course-card/ai-course-card.widget';
+import { AICourseCardWidget } from './widgets/ai-course-card/ai-course-card.widget';
 
 @NgModule({
   declarations: [
@@ -78,7 +78,7 @@ import { AICourseCard } from './widgets/ai-course-card/ai-course-card.widget';
     CreateCourseSiteDialog,
     ImportRosterDialog,
     DeleteRecurringEventDialog,
-    AICourseCard
+    AICourseCardWidget
   ],
   imports: [
     CommonModule,

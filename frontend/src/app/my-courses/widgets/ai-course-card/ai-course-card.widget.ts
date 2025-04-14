@@ -6,7 +6,7 @@ import { CourseSiteOverview } from '../../my-courses.model';
   templateUrl: './ai-course-card.widget.html',
   styleUrls: ['./ai-course-card.widget.scss']
 })
-export class AICourseCard {
+export class AICourseCardWidget {
   /** Term for the course */
   @Input() termId!: string;
   /** The course to show */
