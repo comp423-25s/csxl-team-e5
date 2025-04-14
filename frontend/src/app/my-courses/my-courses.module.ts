@@ -55,6 +55,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { CourseSeekComponent } from './course-seek/course-seek.component';
 import { ChatBubbleWidget } from './widgets/chat-bubble/chat-bubble.widget';
 import { AICourseCardWidget } from './widgets/ai-course-card/ai-course-card.widget';
+import { ShowCourseseekCardsComponent } from './dialogs/show-courseseek-cards/show-courseseek-cards.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { AICourseCardWidget } from './widgets/ai-course-card/ai-course-card.widg
     CreateCourseSiteDialog,
     ImportRosterDialog,
     DeleteRecurringEventDialog,
-    AICourseCardWidget
+    AICourseCardWidget,
+    ShowCourseseekCardsComponent
   ],
   imports: [
     CommonModule,
