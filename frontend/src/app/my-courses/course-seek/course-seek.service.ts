@@ -1,10 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CatalogSection } from 'src/app/academics/academics.models';
 
 export interface ChatResourceResponse {
   sections: CatalogSection[] | null;
   message: string;
+}
+export interface ChatHistoryResponse extends ChatResourceResponse {
+  role: 'assistant' | 'user';
 }
 
 @Injectable({
@@ -13,10 +17,19 @@ export interface ChatResourceResponse {
 export class CourseSeekService {
   constructor(protected http: HttpClient) {}
 
-  async chat(input: string) {
+  chat(input: string, sessionId: string): Observable<ChatResourceResponse> {
     return this.http.post<ChatResourceResponse>(
       `/api/academics/semantic-chat`,
-      { input }
+      {
+        session_id: sessionId,
+        input
+      }
+    );
+  }
+
+  getChatHistory(sessionId: string): Observable<ChatHistoryResponse[]> {
+    return this.http.get<ChatHistoryResponse[]>(
+      `/api/academics/semantic-chat/history/${sessionId}`
     );
   }
 }
