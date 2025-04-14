@@ -11,9 +11,9 @@
 
     </div>
     <div class="chat-content">
-      <chat-bubble [role] = "default_msg().role" [input] = "default_msg().response"></chat-bubble>
+      <chat-bubble [role] = "default_msg().role" [input] = "default_msg().message"></chat-bubble>
       @for(chat of chat_history(); track chat){
-        <chat-bubble [role] = "chat.role" [input] = "chat.response"></chat-bubble>
+        <chat-bubble [role] = "chat.role" [input] = "chat.message"></chat-bubble>
       }
     </div>
     <div class="footer-container">
