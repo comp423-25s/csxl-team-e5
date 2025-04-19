@@ -23,7 +23,16 @@ from .api import (
     websocket,
 )
 from .api.coworking import status, reservation, ambassador, operating_hours
-from .api.academics import section_member, term, course, section, my_courses, hiring, courseseek
+from .api.academics import (
+    section_member,
+    term,
+    course,
+    section,
+    my_courses,
+    hiring,
+    courseseek,
+    semantic_chat,
+)
 from .api.office_hours import (
     office_hours as office_hours_event,
     ticket as office_hours_ticket,
@@ -83,6 +92,7 @@ feature_apis = [
     reservation,
     operating_hours,
     courseseek,
+    semantic_chat,
     events,
     user,
     organizations,

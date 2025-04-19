@@ -10,10 +10,12 @@ from backend.models.courseek import CourseSeekResponse
 from backend.models.public_user import PublicUser
 from backend.models.room import Room
 
-api = APIRouter(prefix = "/api/academics/chat")
+api = APIRouter(prefix="/api/academics/chat")
+
 
 class CourseSeekRequest(BaseModel):
     input: str
+
 
 @api.post("", tags=["CourseSeek"])
 def courseseek_chat(payload: CourseSeekRequest) -> CourseSeekResponse:
@@ -23,7 +25,7 @@ def courseseek_chat(payload: CourseSeekRequest) -> CourseSeekResponse:
         first_name="Brent",
         last_name="Munsell",
         pronouns="he/him",
-        email="bmunsell@unc.edu"
+        email="bmunsell@unc.edu",
     )
     demo_section = CatalogSection(
         course_number="COMP 311",
@@ -35,6 +37,8 @@ def courseseek_chat(payload: CourseSeekRequest) -> CourseSeekResponse:
         meeting_pattern="MWF",
         lecture_room=Room(id="1", nickname="HM 100"),
         instructors=[instructor],
-        total_seats=150
+        total_seats=150,
     )
-    return CourseSeekResponse(sections=[demo_section], response=f"Echo: {payload.input}")
+    return CourseSeekResponse(
+        sections=[demo_section], response=f"Echo: {payload.input}"
+    )

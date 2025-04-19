@@ -1,10 +1,12 @@
-import { Component, Input, signal, WritableSignal } from '@angular/core';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { ChatResourceResponse, CourseSeekService } from './course-seek.service';
 import { map } from 'rxjs';
 import { ChatService } from 'src/app/shared/chat-service/chat-service';
 import { CourseSiteOverview } from '../my-courses.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowCourseseekCardsComponent } from '../dialogs/show-courseseek-cards/show-courseseek-cards.component';
+import { v4 as uuidv4 } from 'uuid';
+
 
 interface ChatHistory extends ChatResourceResponse {
   role: 'assistant' | 'user';
@@ -19,12 +21,12 @@ export interface CourseSeekCourseCard {
   templateUrl: './course-seek.component.html',
   styleUrl: './course-seek.component.css'
 })
-export class CourseSeekComponent {
+export class CourseSeekComponent implements OnInit {
   text_input: WritableSignal<string> = signal('');
   chat_history: WritableSignal<ChatHistory[]> = signal([]);
   default_msg: WritableSignal<ChatHistory> = signal({
     role: 'assistant',
-    response: 'Hi, I am CourseSeek. How can I help you today?',
+    message: 'Hi, I am CourseSeek. How can I help you today?',
     sections: null
   });
 
@@ -120,31 +122,48 @@ export class CourseSeekComponent {
     private dialog: MatDialog
   ) {}
 
-  async getChatCompletions(user_input: string) {
-    const courseSeekResponse = await this.resourceService.chat(user_input);
-    const toChatHistory = (response: ChatResourceResponse, role: string) => {
-      if (role == 'assistant') {
-        return {
-          ...response,
-          role: 'assistant'
-        } as ChatHistory;
-      } else {
-        return {
-          ...response,
-          role: 'user'
-        } as ChatHistory;
+  public sessionId: string =
+    sessionStorage.getItem('chat_session_id') || uuidv4();
+
+  constructor(
+    private resourceService: CourseSeekService,
+    protected chatService: ChatService
+  ) {}
+
+  ngOnInit(): void {
+    sessionStorage.setItem('chat_session_id', this.sessionId);
+    this.loadChatHistory();
+  }
+
+  loadChatHistory() {
+    this.resourceService.getChatHistory(this.sessionId).subscribe({
+      next: (history: ChatHistory[]) => {
+        this.chat_history.set(history);
+      },
+      error: (error) => {
+        console.error('Error loading chat history: ', error);
       }
+    });
+  }
+
+
+  async getChatCompletions(user_input: string) {
+    const courseSeekResponse = await this.resourceService.chat(
+      user_input,
+      this.sessionId
+    );
+    const toChatHistory = (response: ChatResourceResponse, role: string) => {
+      return {
+        ...response,
+        role: role as 'assistant' | 'user'
+      } as ChatHistory;
     };
+
     this.chat_history.set([
       ...this.chat_history(),
-      toChatHistory(
-        {
-          sections: null,
-          response: user_input
-        },
-        'user'
-      )
+      toChatHistory({ sections: null, message: user_input }, 'user')
     ]);
+
     courseSeekResponse
       .pipe(
         map((response) =>
@@ -168,13 +187,5 @@ export class CourseSeekComponent {
       data: courseCardArray
     });
   }
-}
 
-// bottom of chat window: input field for text, "send message" button
-// chat bubbles for course seek and user, course seek bubbles should be course seek blue #4D6BFE
-// meanwhile user bubble should be white/grey
-// need to call api for response messages.
-// need to save chat history
-// (maybe) to have feature to start a new chat? in which case course seek should have a pre-determined first message
-// if time permites, course cards similar to the ones alr on the csxl site
-// profile image icons (next to chat bubbles) (we alr have a logo for course seek)
+}
