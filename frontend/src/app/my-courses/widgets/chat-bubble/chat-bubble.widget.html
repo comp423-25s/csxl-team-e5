@@ -4,6 +4,12 @@
       <span class="assistant-header">CourseSeek</span>
       <mat-card class="assistant-card">{{ input }}</mat-card>
     </div>
+    @if(courseCardArray != null){
+      <div class="assistant-container">
+        <span class="assistant-header">CourseSeek</span>
+        <button (click)="seeCoursesButtonPressed.emit(courseCardArray)">See Suggestions</button>
+      </div>
+    }
   }@else {
     <mat-card class="user-card">{{ input }}</mat-card>
   }
