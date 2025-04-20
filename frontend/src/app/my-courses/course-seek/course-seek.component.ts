@@ -125,11 +125,6 @@ export class CourseSeekComponent implements OnInit {
   public sessionId: string =
     sessionStorage.getItem('chat_session_id') || uuidv4();
 
-  constructor(
-    private resourceService: CourseSeekService,
-    protected chatService: ChatService
-  ) {}
-
   ngOnInit(): void {
     sessionStorage.setItem('chat_session_id', this.sessionId);
     this.loadChatHistory();
