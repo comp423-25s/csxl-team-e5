@@ -6,7 +6,7 @@ from backend.models.simple_chat_response import SimpleChatResponse
 from backend.database import db_session
 from sqlalchemy.orm import Session
 
-from backend.services.academics.courseseek.conversation_state_manager import ConversationStateManager
+from backend.services.academics.courseseek.service import ConversationStateManager
 
 api = APIRouter(prefix="/api/academics/semantic-chat")
 
@@ -14,12 +14,17 @@ api = APIRouter(prefix="/api/academics/semantic-chat")
 class ChatRequest(BaseModel):
     session_id: str
     input: str
-    
+
+
 MODEL = getenv("UNC_OPENAI_MODEL", default="gpt-4o-mini")
 ENDPOINT = getenv("UNC_OPENAI_API_ENDPOINT", default="https://azureaiapi.cloud.unc.edu")
 API_KEY = getenv("UNC_OPENAI_API_KEY")
 
-svc = ConversationStateManager(azure_openai_api_key=API_KEY, azure_openai_endpoint=ENDPOINT, azure_openai_deployment=MODEL)
+svc = ConversationStateManager(
+    azure_openai_api_key=API_KEY,
+    azure_openai_endpoint=ENDPOINT,
+    azure_openai_deployment=MODEL,
+)
 
 
 @api.post("", response_model=SimpleChatResponse)
