@@ -41,3 +41,6 @@ class ChatHistoryResponse(BaseModel):
 def get_history(session_id: str, db: Session = Depends(db_session)):
     history = get_chat_history(db, session_id)
     return history
+
+
+# random comment to "fake push" to update db
