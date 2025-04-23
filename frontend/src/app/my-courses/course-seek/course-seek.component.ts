@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ShowCourseseekCardsComponent } from '../dialogs/show-courseseek-cards/show-courseseek-cards.component';
 import { v4 as uuidv4 } from 'uuid';
 
-
 interface ChatHistory extends ChatResourceResponse {
   role: 'assistant' | 'user';
 }
@@ -125,11 +124,6 @@ export class CourseSeekComponent implements OnInit {
   public sessionId: string =
     sessionStorage.getItem('chat_session_id') || uuidv4();
 
-  constructor(
-    private resourceService: CourseSeekService,
-    protected chatService: ChatService
-  ) {}
-
   ngOnInit(): void {
     sessionStorage.setItem('chat_session_id', this.sessionId);
     this.loadChatHistory();
@@ -145,7 +139,6 @@ export class CourseSeekComponent implements OnInit {
       }
     });
   }
-
 
   async getChatCompletions(user_input: string) {
     const courseSeekResponse = await this.resourceService.chat(
@@ -187,5 +180,4 @@ export class CourseSeekComponent implements OnInit {
       data: courseCardArray
     });
   }
-
 }
