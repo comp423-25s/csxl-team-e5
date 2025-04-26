@@ -6,7 +6,7 @@ import { CourseSiteOverview } from '../my-courses.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowCourseseekCardsComponent } from '../dialogs/show-courseseek-cards/show-courseseek-cards.component';
 import { v4 as uuidv4 } from 'uuid';
-
+import { CourseSeekCourse } from './models';
 
 interface ChatHistory extends ChatResourceResponse {
   role: 'assistant' | 'user';
@@ -27,7 +27,7 @@ export class CourseSeekComponent implements OnInit {
   default_msg: WritableSignal<ChatHistory> = signal({
     role: 'assistant',
     message: 'Hi, I am CourseSeek. How can I help you today?',
-    sections: null
+    courses: null
   });
 
   exampleCourseData = {
@@ -141,7 +141,6 @@ export class CourseSeekComponent implements OnInit {
     });
   }
 
-
   async getChatCompletions(user_input: string) {
     const courseSeekResponse = await this.resourceService.chat(
       user_input,
@@ -156,7 +155,7 @@ export class CourseSeekComponent implements OnInit {
 
     this.chat_history.set([
       ...this.chat_history(),
-      toChatHistory({ sections: null, message: user_input }, 'user')
+      toChatHistory({ courses: null, message: user_input }, 'user')
     ]);
 
     courseSeekResponse
@@ -177,10 +176,9 @@ export class CourseSeekComponent implements OnInit {
     this.chatService.toggleChatWindow();
   }
 
-  openDialog(courseCardArray: CourseSeekCourseCard[]) {
+  openDialog(courseCardArray: CourseSeekCourse[]) {
     this.dialog.open(ShowCourseseekCardsComponent, {
       data: courseCardArray
     });
   }
-
 }

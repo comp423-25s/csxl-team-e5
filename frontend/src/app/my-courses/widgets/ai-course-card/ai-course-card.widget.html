@@ -1,21 +1,18 @@
-<mat-card
-  class="course-card"
-  appearance="outlined">
+<mat-card class="course-card" appearance="outlined">
   <mat-card-header>
     <mat-card-title class="title-medium">
-      {{ course.subject_code }} {{ course.number
-      }}{{ course.role === 'Student' ? '-' + course.sections[0].number : '' }}
+      {{ courseNumber }} – {{ courseTitle }}
     </mat-card-title>
-    <mat-card-subtitle class="title-small course-title">{{
-      course.title
-    }}</mat-card-subtitle>
+    <mat-card-subtitle class="title-small">
+      Credits: {{ credits }}
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    @for (section of course.sections; track section.number) {
-    <p class="meeting-pattern-text">
-      {{ course.sections.length > 1 ? 'Sec ' + section.number + ': ' : ''
-      }}{{ section.meeting_pattern }}
+    <p class="description-text">
+      {{ description }}
     </p>
-    }
+    <p class="requirements-text">
+      <em>{{ requirements }}</em>
+    </p>
   </mat-card-content>
 </mat-card>

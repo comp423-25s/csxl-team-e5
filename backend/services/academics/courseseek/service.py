@@ -15,6 +15,7 @@ from semantic_kernel.processes.kernel_process.kernel_process_event import (
     KernelProcessEvent,
 )
 from backend.models.academics.course import Course
+from backend.models.courseseek_course import CourseSeekCourse
 from backend.services.academics.courseseek.conversation_context import (
     AIResponse,
     ConversationContext,
@@ -23,6 +24,7 @@ from backend.services.academics.courseseek.course_prompt import (
     COURSE_REC_PROMPT,
     RESPONSE_PROMPT,
 )
+import re
 
 
 class ConversationStateManager:
@@ -127,7 +129,9 @@ class ConversationStateManager:
         ):
             if not self.kernel:
                 raise ValueError("Kernel is not initialized.")
+
             data = {"user_input": user_input}
+
             try:
                 result = await self.kernel.invoke(
                     plugin_name="CourseRecommendation",
@@ -137,36 +141,47 @@ class ConversationStateManager:
                         chat_history=self.state.to_chat_history().messages,
                     ),
                 )
-                text = str(result).strip()
-                if text and text.lower() != "null":
+
+                raw = getattr(result, "content", None) or str(result)
+                text = raw.strip()
+                print("Raw AI output repr:", repr(text))
+
+                if text.startswith("```"):
+                    text = re.sub(r"^```(?:json)?\s*", "", text)
+                    text = re.sub(r"\s*```$", "", text)
+                    print("🔍 Stripped fences repr:", repr(text))
+
+                try:
                     parsed = json.loads(text)
-                    if isinstance(parsed, dict):
-                        parsed = [parsed]
-                    if isinstance(parsed, list):
-                        courses = []
-                        for item in parsed:
-                            num = item.get("course_number", "").split()
-                            code, number = (num + [None, None])[:2]
-                            course = Course(
-                                id="0",
-                                subject_code=code or "",
-                                number=number or "",
-                                title=item.get("course_title", ""),
-                                description=item.get("description", ""),
-                                credit_hours=(
-                                    int(item.get("credits", 0))
-                                    if str(item.get("credits", "")).isdigit()
-                                    else 0
-                                ),
-                            )
-                            courses.append(course)
-                            self.state.add_sections(course)
-                        data["courses"] = courses
-                await context.emit_event(process_event="CourseRecommend", data=data)
-                return data
-            except Exception:
-                await context.emit_event(process_event="CourseRecommend", data=data)
-                return data
+                    print("JSON parsed successfully:", parsed)
+                except json.JSONDecodeError as je:
+                    print("‼ JSON decode error:", je)
+                    parsed = []
+
+                if isinstance(parsed, dict):
+                    parsed = [parsed]
+
+                courses = []
+                for item in parsed:
+                    course = CourseSeekCourse(
+                        course_number=item.get("course_number", ""),
+                        course_title=item.get("course_title", ""),
+                        credits=item.get("credits", ""),
+                        description=item.get("description", ""),
+                        requirements=item.get("requirements", ""),
+                    )
+                    courses.append(course)
+                    self.state.add_section(course)
+
+                if courses:
+                    data["courses"] = courses
+
+            except Exception as e:
+                print("‼ recommend_courses turned into voodoo:", e)
+
+            await context.emit_event(process_event="CourseRecommend", data=data)
+            print("Emitted data:", data)
+            return data
 
     class ResponseGenerationStep(KernelProcessStep[ConversationContext]):
         kernel: Kernel | None = None

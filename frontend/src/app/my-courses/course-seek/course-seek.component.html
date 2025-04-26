@@ -13,7 +13,7 @@
     <div class="chat-content">
       <chat-bubble [role] = "default_msg().role" [input] = "default_msg().message" [courseCardArray]="null"(seeCoursesButtonPressed)="openDialog($event)" ></chat-bubble>
       @for(chat of chat_history(); track chat){
-        <chat-bubble [role] = "chat.role" [input] = "chat.message" [courseCardArray]="courseCardArray()" (seeCoursesButtonPressed)="openDialog($event)"></chat-bubble>
+        <chat-bubble [role] = "chat.role" [input] = "chat.message" [courseCardArray]="chat.courses" (seeCoursesButtonPressed)="openDialog($event)"></chat-bubble>
       }
     </div>
     <div class="footer-container">

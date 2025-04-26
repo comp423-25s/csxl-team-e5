@@ -7,10 +7,10 @@ import { CourseSiteOverview } from '../../my-courses.model';
   styleUrls: ['./ai-course-card.widget.scss']
 })
 export class AICourseCardWidget {
-  /** Term for the course */
-  @Input() termId!: string;
-  /** The course to show */
-  @Input() course!: CourseSiteOverview;
-
+  @Input() courseNumber!: string;
+  @Input() courseTitle!: string;
+  @Input() credits!: string;
+  @Input() description!: string;
+  @Input() requirements!: string;
   constructor() {}
 }
