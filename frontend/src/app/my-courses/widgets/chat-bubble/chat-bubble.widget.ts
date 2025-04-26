@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CourseSeekCourseCard } from '../../course-seek/course-seek.component';
+import { CourseSeekCourse } from '../../course-seek/models';
 
 @Component({
   selector: 'chat-bubble',
@@ -9,10 +10,8 @@ import { CourseSeekCourseCard } from '../../course-seek/course-seek.component';
 export class ChatBubbleWidget {
   @Input() role!: 'assistant' | 'user';
   @Input() input!: string;
-  @Input() courseCardArray!: CourseSeekCourseCard[] | null;
-  @Output() seeCoursesButtonPressed = new EventEmitter<
-    CourseSeekCourseCard[]
-  >();
+  @Input() courseCardArray!: CourseSeekCourse[] | null;
+  @Output() seeCoursesButtonPressed = new EventEmitter<CourseSeekCourse[]>();
 
   constructor() {}
 }

@@ -6,7 +6,7 @@ import { CourseSiteOverview } from '../my-courses.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowCourseseekCardsComponent } from '../dialogs/show-courseseek-cards/show-courseseek-cards.component';
 import { v4 as uuidv4 } from 'uuid';
-
+import { CourseSeekCourse } from './models';
 
 interface ChatHistory extends ChatResourceResponse {
   role: 'assistant' | 'user';
@@ -30,7 +30,7 @@ export class CourseSeekComponent implements OnInit {
   default_msg: WritableSignal<ChatHistory> = signal({
     role: 'assistant',
     message: 'Hi, I am CourseSeek. How can I help you today?',
-    sections: null
+    courses: null
   });
 
   exampleCourseData = {
@@ -133,8 +133,6 @@ export class CourseSeekComponent implements OnInit {
     sessionStorage.getItem('chat_session_id') || uuidv4();
     
     loadChatSessions() {
-      // Comment out the API call temporarily
-      /*
       this.resourceService.getChatSessions().subscribe({
         next: (sessions: SessionResourceResponse[]) => {
           this.sessions.set(sessions);
@@ -143,151 +141,17 @@ export class CourseSeekComponent implements OnInit {
           console.error(`Error loading chat sessions: ${error}`);
         }
       });
-      */
-      
-      // Add fake sessions data
-      const fakeSessions: SessionResourceResponse[] = [
-        {
-          session_id: '1234-abcd-5678-efgh',
-          latest_message: {
-            role: 'assistant',
-            message: 'I found COMP 426 Modern Web Programming. It meets MWF 10:00AM-10:50AM in SN 011 and has a recitation on Thursdays.',
-            sections: null
-          }
-        },
-        {
-          session_id: '5678-ijkl-9012-mnop',
-          latest_message: {
-            role: 'assistant',
-            message: 'Professor Kris Jordan teaches COMP 426. The course has 2 GTAs and 3 UTAs who hold office hours throughout the week.',
-            sections: null
-          }
-        },
-        {
-          session_id: '9012-qrst-3456-uvwx',
-          latest_message: {
-            role: 'user',
-            message: 'When is the final exam for COMP 426?',
-            sections: null
-          }
-        },
-        {
-          session_id: '7890-yzab-1234-cdef',
-          latest_message: {
-            role: 'assistant',
-            message: 'The deadline for the final project has been extended to May 5th at 11:59 PM. Make sure to submit through the course website.',
-            sections: null
-          }
-        },
-        {
-          session_id: '4321-ghij-8765-klmn',
-          latest_message: {
-            role: 'assistant',
-            message: 'You can find all the lecture materials and assignment instructions in the Resources section of the course website.',
-            sections: null
-          }
-        },
-        {
-          session_id: '4321-ghij-8765-klmn',
-          latest_message: {
-            role: 'assistant',
-            message: 'You can find all the lecture materials and assignment instructions in the Resources section of the course website.',
-            sections: null
-          }
-        }
-      ];
-      
-      this.sessions.set(fakeSessions);
     }
   
     loadChatHistory(sessionId: string) {
-      // Comment out the API call temporarily
-      /*
       this.resourceService.getChatHistory(sessionId).subscribe({
-        next: (history: ChatHistoryResponse[]) => {
+        next: (history: ChatHistory[]) => {
           this.chat_history.set(history);
         },
         error: (error) => {
           console.error('Error loading chat history: ', error);
         }
       });
-      */
-      
-      // Add fake chat history based on sessionId
-      const fakeChatHistories: { [key: string]: ChatHistory[] } = {
-        '1234-abcd-5678-efgh': [
-          {
-            role: 'user',
-            message: 'Can you tell me about COMP 426?',
-            sections: null
-          },
-          {
-            role: 'assistant',
-            message: 'COMP 426 is Modern Web Programming, a course that teaches frontend and backend development using JavaScript frameworks.',
-            sections: null
-          },
-          {
-            role: 'user',
-            message: 'When and where does it meet?',
-            sections: null
-          },
-          {
-            role: 'assistant',
-            message: 'I found COMP 426 Modern Web Programming. It meets MWF 10:00AM-10:50AM in SN 011 and has a recitation on Thursdays.',
-            sections: null
-          }
-        ],
-        '5678-ijkl-9012-mnop': [
-          {
-            role: 'user',
-            message: 'Who teaches COMP 426?',
-            sections: null
-          },
-          {
-            role: 'assistant',
-            message: 'Professor Kris Jordan teaches COMP 426. The course has 2 GTAs and 3 UTAs who hold office hours throughout the week.',
-            sections: null
-          }
-        ],
-        '9012-qrst-3456-uvwx': [
-          {
-            role: 'user',
-            message: 'When is the final exam for COMP 426?',
-            sections: null
-          }
-        ],
-        '7890-yzab-1234-cdef': [
-          {
-            role: 'user',
-            message: 'Has the deadline for the final project been extended?',
-            sections: null
-          },
-          {
-            role: 'assistant',
-            message: 'The deadline for the final project has been extended to May 5th at 11:59 PM. Make sure to submit through the course website.',
-            sections: null
-          }
-        ],
-        '4321-ghij-8765-klmn': [
-          {
-            role: 'user',
-            message: 'Where can I find the lecture materials?',
-            sections: null
-          },
-          {
-            role: 'assistant',
-            message: 'You can find all the lecture materials and assignment instructions in the Resources section of the course website.',
-            sections: null
-          }
-        ]
-      };
-      
-      // Set the chat history based on the selected session
-      if (fakeChatHistories[sessionId]) {
-        this.chat_history.set(fakeChatHistories[sessionId]);
-      } else {
-        this.chat_history.set([]);
-      }
     }
   
     selectSession(sessionId: string) {
@@ -317,7 +181,7 @@ export class CourseSeekComponent implements OnInit {
       if (!this.selectedSessionId() && this.isMessageOpen()) {
         this.chat_history.update(history => [
           ...history,
-          { role: 'user', message: userInput, sections: null }
+          { role: 'user', message: userInput, courses: null }
         ]);
         
         this.text_input.set('');
@@ -345,7 +209,7 @@ export class CourseSeekComponent implements OnInit {
         
         this.chat_history.update(history => [
           ...history,
-          { role: 'user', message: userInput, sections: null }
+          { role: 'user', message: userInput, courses: null }
         ]);
         
         this.text_input.set('');
@@ -374,7 +238,7 @@ export class CourseSeekComponent implements OnInit {
     this.chatService.toggleChatWindow();
   }
 
-  openDialog(courseCardArray: CourseSeekCourseCard[]) {
+  openDialog(courseCardArray: CourseSeekCourse[]) {
     this.dialog.open(ShowCourseseekCardsComponent, {
       data: courseCardArray
     });

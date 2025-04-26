@@ -5,14 +5,18 @@ from pydantic import BaseModel, Field
 from semantic_kernel.contents import ChatHistory
 from backend.models.academics.course import Course
 from backend.models.academics.section import CatalogSection
+from backend.models.courseseek_course import CourseSeekCourse
+
 
 class ChatHistoryResponse(BaseModel):
     role: str
     message: str
 
+
 class AIResponse(BaseModel):
     message: str
-    courses: list[Course]
+    courses: list[CourseSeekCourse]
+
 
 class ConversationContext(BaseModel):
     messages: list[ChatHistoryResponse] = Field(default_factory=list)
@@ -31,7 +35,7 @@ class ConversationContext(BaseModel):
     def add_system_message(self, content: str) -> None:
         self.add_message("system", content)
 
-    def add_secton(self, courses: Course) -> None:
+    def add_section(self, courses: Course) -> None:
         self.sections.append(courses)
 
     def to_chat_history(self) -> ChatHistory:
