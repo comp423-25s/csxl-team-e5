@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, WritableSignal } from '@angular/core';
-import { ChatResourceResponse, CourseSeekService } from './course-seek.service';
+import { ChatResourceResponse, CourseSeekService, SessionResourceResponse } from './course-seek.service';
 import { map } from 'rxjs';
 import { ChatService } from 'src/app/shared/chat-service/chat-service';
 import { CourseSiteOverview } from '../my-courses.model';
@@ -22,7 +22,10 @@ export interface CourseSeekCourseCard {
   styleUrl: './course-seek.component.css'
 })
 export class CourseSeekComponent implements OnInit {
+  isMessageOpen: WritableSignal<boolean> = signal(false);
   text_input: WritableSignal<string> = signal('');
+  sessions: WritableSignal<SessionResourceResponse[]> = signal([]);
+  selectedSessionId: WritableSignal<string | null> = signal(null);
   chat_history: WritableSignal<ChatHistory[]> = signal([]);
   default_msg: WritableSignal<ChatHistory> = signal({
     role: 'assistant',
@@ -122,56 +125,250 @@ export class CourseSeekComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
+  ngOnInit(): void {
+    this.loadChatSessions();
+  }
+
   public sessionId: string =
     sessionStorage.getItem('chat_session_id') || uuidv4();
-
-  ngOnInit(): void {
-    sessionStorage.setItem('chat_session_id', this.sessionId);
-    this.loadChatHistory();
-  }
-
-  loadChatHistory() {
-    this.resourceService.getChatHistory(this.sessionId).subscribe({
-      next: (history: ChatHistory[]) => {
-        this.chat_history.set(history);
-      },
-      error: (error) => {
-        console.error('Error loading chat history: ', error);
+    
+    loadChatSessions() {
+      // Comment out the API call temporarily
+      /*
+      this.resourceService.getChatSessions().subscribe({
+        next: (sessions: SessionResourceResponse[]) => {
+          this.sessions.set(sessions);
+        },
+        error: (error) => {
+          console.error(`Error loading chat sessions: ${error}`);
+        }
+      });
+      */
+      
+      // Add fake sessions data
+      const fakeSessions: SessionResourceResponse[] = [
+        {
+          session_id: '1234-abcd-5678-efgh',
+          latest_message: {
+            role: 'assistant',
+            message: 'I found COMP 426 Modern Web Programming. It meets MWF 10:00AM-10:50AM in SN 011 and has a recitation on Thursdays.',
+            sections: null
+          }
+        },
+        {
+          session_id: '5678-ijkl-9012-mnop',
+          latest_message: {
+            role: 'assistant',
+            message: 'Professor Kris Jordan teaches COMP 426. The course has 2 GTAs and 3 UTAs who hold office hours throughout the week.',
+            sections: null
+          }
+        },
+        {
+          session_id: '9012-qrst-3456-uvwx',
+          latest_message: {
+            role: 'user',
+            message: 'When is the final exam for COMP 426?',
+            sections: null
+          }
+        },
+        {
+          session_id: '7890-yzab-1234-cdef',
+          latest_message: {
+            role: 'assistant',
+            message: 'The deadline for the final project has been extended to May 5th at 11:59 PM. Make sure to submit through the course website.',
+            sections: null
+          }
+        },
+        {
+          session_id: '4321-ghij-8765-klmn',
+          latest_message: {
+            role: 'assistant',
+            message: 'You can find all the lecture materials and assignment instructions in the Resources section of the course website.',
+            sections: null
+          }
+        },
+        {
+          session_id: '4321-ghij-8765-klmn',
+          latest_message: {
+            role: 'assistant',
+            message: 'You can find all the lecture materials and assignment instructions in the Resources section of the course website.',
+            sections: null
+          }
+        }
+      ];
+      
+      this.sessions.set(fakeSessions);
+    }
+  
+    loadChatHistory(sessionId: string) {
+      // Comment out the API call temporarily
+      /*
+      this.resourceService.getChatHistory(sessionId).subscribe({
+        next: (history: ChatHistoryResponse[]) => {
+          this.chat_history.set(history);
+        },
+        error: (error) => {
+          console.error('Error loading chat history: ', error);
+        }
+      });
+      */
+      
+      // Add fake chat history based on sessionId
+      const fakeChatHistories: { [key: string]: ChatHistory[] } = {
+        '1234-abcd-5678-efgh': [
+          {
+            role: 'user',
+            message: 'Can you tell me about COMP 426?',
+            sections: null
+          },
+          {
+            role: 'assistant',
+            message: 'COMP 426 is Modern Web Programming, a course that teaches frontend and backend development using JavaScript frameworks.',
+            sections: null
+          },
+          {
+            role: 'user',
+            message: 'When and where does it meet?',
+            sections: null
+          },
+          {
+            role: 'assistant',
+            message: 'I found COMP 426 Modern Web Programming. It meets MWF 10:00AM-10:50AM in SN 011 and has a recitation on Thursdays.',
+            sections: null
+          }
+        ],
+        '5678-ijkl-9012-mnop': [
+          {
+            role: 'user',
+            message: 'Who teaches COMP 426?',
+            sections: null
+          },
+          {
+            role: 'assistant',
+            message: 'Professor Kris Jordan teaches COMP 426. The course has 2 GTAs and 3 UTAs who hold office hours throughout the week.',
+            sections: null
+          }
+        ],
+        '9012-qrst-3456-uvwx': [
+          {
+            role: 'user',
+            message: 'When is the final exam for COMP 426?',
+            sections: null
+          }
+        ],
+        '7890-yzab-1234-cdef': [
+          {
+            role: 'user',
+            message: 'Has the deadline for the final project been extended?',
+            sections: null
+          },
+          {
+            role: 'assistant',
+            message: 'The deadline for the final project has been extended to May 5th at 11:59 PM. Make sure to submit through the course website.',
+            sections: null
+          }
+        ],
+        '4321-ghij-8765-klmn': [
+          {
+            role: 'user',
+            message: 'Where can I find the lecture materials?',
+            sections: null
+          },
+          {
+            role: 'assistant',
+            message: 'You can find all the lecture materials and assignment instructions in the Resources section of the course website.',
+            sections: null
+          }
+        ]
+      };
+      
+      // Set the chat history based on the selected session
+      if (fakeChatHistories[sessionId]) {
+        this.chat_history.set(fakeChatHistories[sessionId]);
+      } else {
+        this.chat_history.set([]);
       }
-    });
-  }
+    }
+  
+    selectSession(sessionId: string) {
+      this.selectedSessionId.set(sessionId);
+      this.isMessageOpen.set(true);
+      this.loadChatHistory(sessionId);
+    }
+  
+    goBack() {
+      this.selectedSessionId.set(null);
+      this.isMessageOpen.set(false);
+      this.chat_history.set([]);
+    }
+  
+    startNewChat() {
+      const newSessionId = uuidv4();
+      this.selectedSessionId.set(newSessionId);
+      this.isMessageOpen.set(true);
+      this.chat_history.set([])
 
+      sessionStorage.setItem('chat_session_id', newSessionId);
+    }
+  
+    getChatCompletions(userInput: string) {
+      if (!userInput.trim()) return;
+      
+      if (!this.selectedSessionId() && this.isMessageOpen()) {
+        this.chat_history.update(history => [
+          ...history,
+          { role: 'user', message: userInput, sections: null }
+        ]);
+        
+        this.text_input.set('');
+        
+        this.resourceService.chat(userInput, '')
+          .pipe(
+            map((response) => {
+              this.chat_history.update(history => [
+                ...history, 
+                { ...response, role: 'assistant' }
+              ]);
+              
+              this.loadChatSessions();
 
-  async getChatCompletions(user_input: string) {
-    const courseSeekResponse = await this.resourceService.chat(
-      user_input,
-      this.sessionId
-    );
-    const toChatHistory = (response: ChatResourceResponse, role: string) => {
-      return {
-        ...response,
-        role: role as 'assistant' | 'user'
-      } as ChatHistory;
-    };
-
-    this.chat_history.set([
-      ...this.chat_history(),
-      toChatHistory({ sections: null, message: user_input }, 'user')
-    ]);
-
-    courseSeekResponse
-      .pipe(
-        map((response) =>
-          this.chat_history.set([
-            ...this.chat_history(),
-            toChatHistory(response, 'assistant')
-          ])
-        )
-      )
-      .subscribe();
-
-    this.text_input.set('');
-  }
+              return response;
+            })
+          )
+          .subscribe({
+            error: (error) => {
+              console.error('Error creating new chat session:', error);
+            }
+          });
+      } else if (this.selectedSessionId()) {
+        const sessionId = this.selectedSessionId() as string;
+        
+        this.chat_history.update(history => [
+          ...history,
+          { role: 'user', message: userInput, sections: null }
+        ]);
+        
+        this.text_input.set('');
+        
+        this.resourceService.chat(userInput, sessionId)
+          .pipe(
+            map((response) => 
+              this.chat_history.update(history => [
+                ...history, 
+                { ...response, role: 'assistant' }
+              ])
+            )
+          )
+          .subscribe({
+            next: () => {
+              this.loadChatSessions();
+            },
+            error: (error) => {
+              console.error('Error sending message:', error);
+            }
+          });
+      }
+    }
 
   toggleChatWindow() {
     this.chatService.toggleChatWindow();
@@ -182,5 +379,4 @@ export class CourseSeekComponent implements OnInit {
       data: courseCardArray
     });
   }
-
 }

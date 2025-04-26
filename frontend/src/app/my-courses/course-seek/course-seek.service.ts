@@ -8,6 +8,10 @@ export interface ChatResourceResponse {
   sections: CatalogSection[] | null;
   message: string;
 }
+export interface SessionResourceResponse {
+  session_id: string;
+  latest_message: ChatHistoryResponse;
+}
 export interface ChatHistoryResponse extends ChatResourceResponse {
   role: 'assistant' | 'user';
 }
@@ -32,5 +36,11 @@ export class CourseSeekService {
     return this.http.get<ChatHistoryResponse[]>(
       `/api/academics/semantic-chat/history/${sessionId}`
     );
+  }
+
+  getChatSessions(): Observable<SessionResourceResponse[]> {
+    return this.http.get<SessionResourceResponse[]>(
+      "/api/academics/semantic-chat/sessions"
+    )
   }
 }
