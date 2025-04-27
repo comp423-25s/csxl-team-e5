@@ -21,6 +21,6 @@ COPY --from=build /workspace/static/browser /workspace/static
 COPY ./backend /workspace/backend
 COPY ./alembic.ini /workspace/alembic.ini
 WORKDIR /workspace
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "3"]
+CMD ["/bin/sh", "-c", "exec uvicorn backend.main:app --host 0.0.0.0 --port 8080 --workers 3 && alembic stamp head && alembic revision --autogenerate -m 'create chat_history table' && alembic upgrade head"]
 ENV TZ="America/New_York"
 EXPOSE 8080
