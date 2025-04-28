@@ -8,6 +8,8 @@ import { ChatService } from 'src/app/shared/chat-service/chat-service';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowCourseseekCardsComponent } from '../dialogs/show-courseseek-cards/show-courseseek-cards.component';
 import { CourseSeekCourse } from './models';
+import { v4 as uuidv4 } from 'uuid';
+
 
 interface ChatHistory extends ChatResourceResponse {
   role: 'assistant' | 'user';
@@ -63,6 +65,7 @@ export class CourseSeekComponent implements OnInit {
       next: (s) => this.sessions.set(s),
       error: (e) => console.error(e)
     });
+
   }
 
   loadChatHistory(sessionId: string) {
