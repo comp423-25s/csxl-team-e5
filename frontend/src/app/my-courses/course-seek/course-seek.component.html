@@ -1,31 +1,79 @@
 <div class="main-container">
+  @if (!isMessageOpen()) {
     <div class="chat-header">
       <mat-icon>chat_bubble_outline</mat-icon>
       <div class="text-container">
-        <span style="font-weight: bold;">CourseSeek</span>
-        <span style="font-weight: lighter; font-size: small;">AI Agent</span>
+        <span class="header-title">Messages</span>
+        <span class="header-subtitle">CourseSeek Chat History</span>
       </div>
       <button class="close-button" (click)="toggleChatWindow()">
         <mat-icon>close</mat-icon>
       </button>
-
     </div>
+    
+    <div class="chat-content">
+      <div class="sessions-list">
+        @for (session of sessions(); track session.session_id) {
+          <div class="session-item" (click)="selectSession(session.session_id)">
+            <div class="session-card">
+              <div [class]="'message-indicator ' + (session.latest_message.role === 'assistant' ? 'assistant-indicator' : 'user-indicator')"></div>
+              <div class="message-preview">
+                <p class="message-role">{{ session.latest_message.role === 'assistant' ? 'CourseSeek' : 'You' }}</p>
+                <p class="message-content">{{ session.latest_message.message }}</p>
+              </div>
+              <div class="session-arrow">
+                <mat-icon style="color: #aaa;">chevron_right</mat-icon>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+    
+    <div class="new-chat-container">
+      <button class="new-chat-button" (click)="startNewChat()">
+        <mat-icon>add</mat-icon>
+        <span>New Chat</span>
+      </button>
+    </div>
+  }
+  
+  @if (isMessageOpen()) {
+    <div class="chat-header">
+      <button class="back-button" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="text-container">
+        <span class="header-title">CourseSeek</span>
+        <span class="header-subtitle">AI Assistant</span>
+      </div>
+      <button class="close-button" (click)="toggleChatWindow()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
     <div class="chat-content">
       <chat-bubble [role] = "default_msg().role" [input] = "default_msg().message" [courseCardArray]="null"(seeCoursesButtonPressed)="openDialog($event)" ></chat-bubble>
       @for(chat of chat_history(); track chat){
-        <chat-bubble [role] = "chat.role" [input] = "chat.message" [courseCardArray]="courseCardArray()" (seeCoursesButtonPressed)="openDialog($event)"></chat-bubble>
+        <chat-bubble [role] = "chat.role" [input] = "chat.message" [courseCardArray]="chat.courses" (seeCoursesButtonPressed)="openDialog($event)"></chat-bubble>
       }
     </div>
+    
     <div class="footer-container">
-        <div class="input-container">
-          <input class="text-input" placeholder="Type your message..." [value]="text_input()" (input)="text_input.set($any($event.target).value)" />
-          <div class="toolbar">
-            <div class="tools">
-              <button class="input-button" (click)="getChatCompletions(text_input())">
-                <mat-icon style="font-size: 20px; color: white; padding-top: 4px; padding-left: 1px">send</mat-icon>
-              </button>
-            </div>
+      <div class="input-container">
+        <input class="text-input" 
+               placeholder="Type your message..." 
+               [value]="text_input()" 
+               (input)="text_input.set($any($event.target).value)"
+               (keydown.enter)="getChatCompletions(text_input())" />
+        <div class="toolbar">
+          <div class="tools">
+            <button class="input-button" (click)="getChatCompletions(text_input())">
+              <mat-icon style="font-size: 20px; color: white; padding-top: 4px; padding-left: 1px">send</mat-icon>
+            </button>
           </div>
         </div>
       </div>
-  </div>
+    </div>
+  }
+</div>

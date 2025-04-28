@@ -1,18 +1,35 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CourseSeekCourseCard } from '../../course-seek/course-seek.component';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
+import { CourseSeekCourse } from '../../course-seek/models';
 
 @Component({
   selector: 'chat-bubble',
   templateUrl: './chat-bubble.widget.html',
   styleUrls: ['./chat-bubble.widget.scss']
 })
-export class ChatBubbleWidget {
+export class ChatBubbleWidget implements OnChanges {
   @Input() role!: 'assistant' | 'user';
   @Input() input!: string;
-  @Input() courseCardArray!: CourseSeekCourseCard[] | null;
-  @Output() seeCoursesButtonPressed = new EventEmitter<
-    CourseSeekCourseCard[]
-  >();
+  @Input() courseCardArray!: CourseSeekCourse[] | null;
+  @Output() seeCoursesButtonPressed = new EventEmitter<CourseSeekCourse[]>();
 
-  constructor() {}
+  localCourses: CourseSeekCourse[] = [];
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['courseCardArray']) {
+      this.localCourses = this.courseCardArray ? [...this.courseCardArray] : [];
+    }
+  }
+
+  onSeeCourses() {
+    if (this.localCourses.length) {
+      this.seeCoursesButtonPressed.emit(this.localCourses);
+    }
+  }
 }
