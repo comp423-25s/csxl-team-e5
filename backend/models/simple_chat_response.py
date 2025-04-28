@@ -7,5 +7,6 @@ from backend.models.courseseek_course import CourseSeekCourse
 
 
 class SimpleChatResponse(BaseModel):
+    session_id: str
     message: str
     courses: list[CourseSeekCourse]

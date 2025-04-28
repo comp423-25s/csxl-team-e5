@@ -1,10 +1,5 @@
-from datetime import datetime
-import uuid
 from pydantic import BaseModel, Field
-
 from semantic_kernel.contents import ChatHistory
-from backend.models.academics.course import Course
-from backend.models.academics.section import CatalogSection
 from backend.models.courseseek_course import CourseSeekCourse
 
 
@@ -19,12 +14,12 @@ class AIResponse(BaseModel):
 
 
 class ConversationContext(BaseModel):
+    session_id: str = ""
     messages: list[ChatHistoryResponse] = Field(default_factory=list)
-    sections: list[Course] = Field(default_factory=list)
+    sections: list[CourseSeekCourse] = Field(default_factory=list)
 
     def add_message(self, role: str, content: str) -> None:
-        message: ChatHistoryResponse = ChatHistoryResponse(role=role, message=content)
-        self.messages.append(message)
+        self.messages.append(ChatHistoryResponse(role=role, message=content))
 
     def add_user_message(self, content: str) -> None:
         self.add_message("user", content)
@@ -35,28 +30,16 @@ class ConversationContext(BaseModel):
     def add_system_message(self, content: str) -> None:
         self.add_message("system", content)
 
-    def add_section(self, courses: Course) -> None:
-        self.sections.append(courses)
+    def add_section(self, course: CourseSeekCourse) -> None:
+        self.sections.append(course)
 
     def to_chat_history(self) -> ChatHistory:
         chat_history = ChatHistory()
-
         for msg in self.messages:
-            role = msg.role
-            content = msg.message
-
-            if role == "user":
-                chat_history.add_user_message(content)
-            elif role == "assistant":
-                chat_history.add_assistant_message(content)
-            elif role == "system":
-                chat_history.add_system_message(content)
-
+            if msg.role == "user":
+                chat_history.add_user_message(msg.message)
+            elif msg.role == "assistant":
+                chat_history.add_assistant_message(msg.message)
+            elif msg.role == "system":
+                chat_history.add_system_message(msg.message)
         return chat_history
-
-    def from_chat_history(self, chat_history: ChatHistory) -> None:
-        self.messages = []
-
-        for message in chat_history:
-            role = message.role.value.lower()
-            self.add_message(role, message.content)

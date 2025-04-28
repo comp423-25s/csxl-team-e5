@@ -22,6 +22,12 @@ class UserEntity(EntityBase):
     # Name for the user table in the PostgreSQL database
     __tablename__ = "user"
 
+    chat_sessions = relationship(
+        "ChatSession",
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
     # Unique ID for the user entry
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     # PID of the user (should be unique per user)
