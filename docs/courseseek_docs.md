@@ -9,7 +9,7 @@
 
 ## Overview
 
-CourseSeek is a chatbot feature for the CSXL website that allows users to describe the kind of Computer Science course they are looking for and receive input about what courses fit that description. This was built with the intention to help computer science students in getting the most out of their time at UNC Chapel Hill by assisting them in finding courses that appeal to their interests and provide practical value to them personally.
+CourseSeek is a chatbot feature for the CSXL website that allows users to describe what kind of Computer Science courses they would like to take and the topics that they are interested in and receive advice about what COMP courses in the UNC catalog fit that description. This was built with the intention to help computer science students in getting the most out of their time at UNC Chapel Hill by assisting them in finding courses that appeal to their interests and provide practical value to them personally.
 
 ## Frontend
 
@@ -29,19 +29,18 @@ _Figure 3: The course cards that CourseSeek provides as an easily digestible way
 
 ### Component Structure
 
-Most of the frontend components made for course seek can be found in `frontend/src/app/my-courses/course-seek`. These include the widgets specific to CourseSeek:
+All course seek frontend code can be found within `frontend/src/app/my-courses`. The main frontend component made for course seek can be found in `frontend/src/app/my-courses/course-seek`. The dialog component for the course cards (shown in **Figure 3**) can be found in `frontend/src/app/my-courses/dialogs/show-courseseek-cards`. The widgets for it can be found in `frontend/src/app/my-courses/widgets`. The widgets used are the following:
 
 - `chat-bubble` — handles user and AI message display (see **Figure 2**)
-- `ai-course-card` — displays AI-recommended courses (see **Figure 3**)
-- `course-card` — a shared component used elsewhere on the site
+- `ai-course-card` — a widget used to display a course as a card in the `show-courseseek-cards` dialog (see **Figure 3**)
 
-All remaining elements of the CourseSeek UI were implemented within the `course-seek` component under the `my-courses` page directory.
+The course seek component is shown in the my-courses page in `frontend/src/app/my-courses/my-courses-page` when the open chatbot button is pressed. 
 
 ---
 
 ## Backend Architecture
 
-For the brains of CourseSeek, OpenAPI is used and accessed through SemanticKernel.
+For the brains of CourseSeek, OpenAPI is used and accessed through [SemanticKernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/). SemanticKernal is a lightweight open-source development kit that allows for some pretty cool features like AI function calling and has useful pre-built componenents. 
 
 - SemanticKernel implementation and prompting is done in `backend/services/semantic_kernel_chat.py`, where a list of Computer Science classes at UNC is fed into an OpenAPI request. SemanticKernel will return these in a format able to be used by CourseSeek to construct Course Cards.
 - Routes for initiating a new chat session, retrieving chat history, and retrieving previous chat sessions are defined in `backend/models/semantic_chat_models.py`
